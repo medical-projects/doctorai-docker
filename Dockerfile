@@ -56,6 +56,7 @@ ADD http://www.gtlib.gatech.edu/pub/apache/zeppelin/zeppelin-0.7.1/zeppelin-0.7.
 
 RUN (! id -u zeppelin > dev/null 2>&1 ) && adduser zeppelin
 # RUN tar -xzf zeppelin-0.7.1-bin-all.tgz
+RUN [ -f zeppelin-0.7.1-bin-all.tgz ] && tar -xzf zeppelin-0.7.1-bin-all.tgz && rm -f zeppelin-0.7.1-bin-all.tgz
 RUN mv zeppelin-0.7.1-bin-all /usr/local/ ;\
   ln -sf /usr/local/zeppelin-0.7.1-bin-all /usr/local/zeppelin;
 
