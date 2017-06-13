@@ -6,7 +6,8 @@ RUN curl http://www.apache.org/dist/bigtop/bigtop-1.2.0/repos/fedora25/bigtop.re
 RUN dnf update -y ; \
     dnf install openssh* wget bzip2 unzip gzip git gcc-c++ \
     java-1.8.0-openjdk java-1.8.0-openjdk-devel \
-    sudo hostname -y
+    sudo hostname -y ; \
+    dnf clean all
 
 # SSH service start
 RUN ssh-keygen -A
@@ -51,36 +52,33 @@ RUN echo "export JAVA_HOME=/usr/lib/jvm/java" >> /etc/profile
 
 # hadoop init end
 
-# zeppelin start 
-ADD http://www.gtlib.gatech.edu/pub/apache/zeppelin/zeppelin-0.7.1/zeppelin-0.7.1-bin-all.tgz /
+ADD scripts/env.init.sh /
 
-RUN (! id -u zeppelin > dev/null 2>&1 ) && adduser zeppelin
-# RUN tar -xzf zeppelin-0.7.1-bin-all.tgz
-RUN [ -f zeppelin-0.7.1-bin-all.tgz ] && tar -xzf zeppelin-0.7.1-bin-all.tgz && rm -f zeppelin-0.7.1-bin-all.tgz
-RUN mv zeppelin-0.7.1-bin-all /usr/local/ ;\
-  ln -sf /usr/local/zeppelin-0.7.1-bin-all /usr/local/zeppelin;
+RUN /env.init.sh
 
+# final configure for zeppelin
 ADD data/zeppelin/conf/ /usr/local/zeppelin/conf/
 
 RUN chown -R zeppelin:zeppelin /usr/local/zeppelin ; \
- chown -R zeppelin:zeppelin /usr/local/zeppelin-0.7.1-bin-all
+ chown -R zeppelin:zeppelin /usr/local/zeppelin-0.7.1-bin-netinst
 
-ENV PATH /usr/local/zeppelin/bin:$PATH
-RUN echo 'export PATH=/usr/local/zeppelin/bin:$PATH' >> /etc/profile
+# ENV PATH /usr/local/zeppelin/bin:$PATH
+# RUN echo 'export PATH=/usr/local/zeppelin/bin:$PATH' >> /etc/profile
 
 EXPOSE 9530
 
 # /usr/bin/sudo -i -u zeppelin /usr/local/zeppelin/bin/zeppelin-daemon.sh start
 # /usr/bin/sudo -i -u zeppelin /usr/local/zeppelin/bin/zeppelin-daemon.sh stop
+ADD scripts/zeppelin_serve.sh  /scripts/
 
 # zeppelin end
 
 
-# add miniconda
-RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && chmod +x miniconda.sh && ./miniconda.sh -b -p /usr/local/mc && rm -rf miniconda.sh
-ENV PATH /usr/local/mc/bin:$PATH
-RUN echo 'export PATH=/usr/local/mc/bin:$PATH' >> /etc/profile
-RUN conda install --yes numpy theano ipython
+# # add miniconda
+# RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && chmod +x miniconda.sh && ./miniconda.sh -b -p /usr/local/mc && rm -rf miniconda.sh
+# ENV PATH /usr/local/mc/bin:$PATH
+# RUN echo 'export PATH=/usr/local/mc/bin:$PATH' >> /etc/profile
+# RUN conda install --yes numpy theano ipython
 
 #
 # # setup
