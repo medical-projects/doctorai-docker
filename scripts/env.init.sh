@@ -17,7 +17,7 @@ echo "instgall interpreters"
 mv zeppelin-0.7.1-bin-netinst /usr/local/
 ln -sf /usr/local/zeppelin-0.7.1-bin-netinst /usr/local/zeppelin
 
-echo 'export PATH=/usr/local/zeppelin/bin:$PATH' >> /etc/profile
+echo 'export PATH=/usr/local/zeppelin/bin:$PATH' >> /etc/bashrc
 
 echo "zeppelin success"
 
@@ -27,7 +27,7 @@ wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O mi
 chmod +x miniconda.sh
 ./miniconda.sh -b -p /usr/local/mc && rm -rf miniconda.sh
 export PATH=/usr/local/mc/bin:$PATH
-echo 'export PATH=/usr/local/mc/bin:$PATH' >> /etc/profile
+echo 'export PATH=/usr/local/mc/bin:$PATH' >> /etc/bashrc
 
 # theano
 conda install --yes numpy theano ipython
@@ -51,9 +51,11 @@ rm -f pytorch.tgz
 # for https://github.com/pytorch/examples/tree/master/imagenet
 pip install torchvision
 
-
 # tf
 conda install --yes tensorflow
+
+# bug fix
+pip install py4j
 
 echo "miniconda success"
 
