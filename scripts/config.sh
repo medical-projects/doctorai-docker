@@ -7,7 +7,7 @@ export INSTALL_ZEPPELIN=1
 # the follow 3 options are based on miniconda
 export INSTALL_THEANO=1
 export INSTALL_PYTORCH=1
-export INSTALL_TENSORFLOW=1
+export INSTALL_TENSORFLOW=0
 
 
 export INSTALL_IPYTHON=1
