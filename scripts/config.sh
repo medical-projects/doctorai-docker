@@ -2,11 +2,11 @@
 # 1: install it
 # 0: nope
 
-export INSTALL_ZEPPELIN=1
+export INSTALL_ZEPPELIN=0
 
 # the follow 3 options are based on miniconda
-export INSTALL_THEANO=1
-export INSTALL_PYTORCH=1
+export INSTALL_THEANO=0
+export INSTALL_PYTORCH=0
 export INSTALL_TENSORFLOW=1
 
 
