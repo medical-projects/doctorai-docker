@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-docker build -t doctorai .
+DOCKER_TAG_NAME=${1:-doctorai}
+docker build -t $DOCKER_TAG_NAME .
 

@@ -52,15 +52,18 @@ RUN echo "export JAVA_HOME=/usr/lib/jvm/java" >> /etc/profile
 
 # hadoop init end
 
-ADD scripts/env.init.sh /
+ADD scripts/config.sh /scripts/
 
-RUN /env.init.sh
+ADD scripts/env.init.sh /scripts/
 
-# final configure for zeppelin
+RUN /scripts/env.init.sh
+
+# post configure for zeppelin
 ADD data/zeppelin/conf/ /usr/local/zeppelin/conf/
 
-RUN chown -R zeppelin:zeppelin /usr/local/zeppelin ; \
- chown -R zeppelin:zeppelin /usr/local/zeppelin-0.7.1-bin-netinst
+RUN if [ -d /usr/local/zeppelin-0.7.1-bin-netinst ]; then \
+ chown -R zeppelin:zeppelin /usr/local/zeppelin ; \
+ chown -R zeppelin:zeppelin /usr/local/zeppelin-0.7.1-bin-netinst ; fi
 
 # ENV PATH /usr/local/zeppelin/bin:$PATH
 # RUN echo 'export PATH=/usr/local/zeppelin/bin:$PATH' >> /etc/profile
